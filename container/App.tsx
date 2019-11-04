@@ -4,14 +4,34 @@ import { Container } from 'native-base'
 import CaloriePanel from '../component/caloriePanel.tsx'
 
 export default class App extends React.Component {
-  state={
-    foo: 'foo'
+  // state={
+  //   foo: 'foo'
+  // }
+  state = mockState
+
+  onPressPanel = (panelData) => {
+    const monday = {...this.state.monday}
+    monday.calorie[0].calorie = 777
+    this.setState({monday})
+    
+
+    alert(JSON.stringify(this.state))
+    // this.setState(newState)
   }
 
   render() {
     return (
       <Container style={styles.container}>
-        <FlatList data={mockState.monday.calorie} renderItem={({item}) => <CaloriePanel category={item.category} calorie={item.calorie} />} />
+        <FlatList
+          data={this.state.monday.calorie}
+          renderItem={({item, index}) => 
+            <CaloriePanel
+              category={item.category}
+              calorie={item.calorie}
+              onPressPanel={() => this.onPressPanel(item, index)} />
+          } 
+          extraData={this.state}
+        />
       </Container>
     )
   }

@@ -1,18 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { Card } from 'native-base'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
-export default function calorieCard({category, calorie, onPressPanel}) {
+export default function weekSelectFooter({category, calorie}) {
   return (
-    <TouchableWithoutFeedback onPress={onPressPanel}>
-      <Card style={S.container}>
-        <Text style={S.categoryText}>{category}</Text>
-        <Text style={S.calorieValueText}>{calorie}</Text>
-        <Text style={S.calorieUnitText}>cal</Text>
-      </Card> 
-    </TouchableWithoutFeedback>
+    <Card style={S.container}>
+      <Text style={S.categoryText}>{category}</Text>
+      <Text style={S.calorieValueText}>{calorie}</Text>
+      <Text style={S.calorieUnitText}>cal</Text>
+    </Card> 
   )
 }
 
