@@ -4,11 +4,11 @@ import { Card } from 'native-base'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
-export default function calorieCard(props) {
+export default function calorieCard({category, calorie}) {
   return (
     <Card style={S.container}>
-      <Text style={S.categoryText}>朝食</Text>
-      <Text style={S.calorieValueText}>0</Text>
+      <Text style={S.categoryText}>{category}</Text>
+      <Text style={S.calorieValueText}>{calorie}</Text>
       <Text style={S.calorieUnitText}>cal</Text>
     </Card> 
   )
@@ -17,24 +17,24 @@ export default function calorieCard(props) {
 const S = StyleSheet.create({
   container: {
     height: hp('13%'),
-    width: wp('84%'),
+    width: wp('86%'),
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
   },
   categoryText: {
     position: 'absolute',
-    left: wp('10%'),
-    fontSize: 30
+    left: wp('8%'),
+    fontSize: 22
   },
   calorieValueText: {
     position: 'absolute',
-    right: wp(20),
-    fontSize: 30
+    right: wp(15),
+    fontSize: 22
   },
   calorieUnitText: {
     position: 'absolute',
-    right: wp(10),
-    fontSize: 20
+    right: wp(8),
+    fontSize: 17
   }
 })
