@@ -1,15 +1,35 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native'
 import { Card } from 'native-base'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import {dayEnum} from '../assets/enum/dayEnum'
+
+const weekData = [
+  {dayName: '月', dayKey: dayEnum.monday},
+  {dayName: '火', dayKey: dayEnum.tuesday},
+  {dayName: '水', dayKey: dayEnum.wednesday},
+  {dayName: '木', dayKey: dayEnum.thursday},
+  {dayName: '金', dayKey: dayEnum.friday},
+  {dayName: '土', dayKey: dayEnum.saturday},
+  {dayName: '日', dayKey: dayEnum.sunday},
+]
 
 
-export default function weekSelectFooter({category, calorie}) {
+const weekSelectFooter = (props) => {
+
+  dayItem = ({item}) => {
+    return(
+      <TouchableWithoutFeedback onPress={() => props.onPressDay(item.dayKey)}>
+        <View style={props.selectedDay === item.dayKey ? S.selectedDay : S.defaultDay} >
+          <Text>{item.dayName}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   return (
     <Card style={S.container}>
-      <Text style={S.categoryText}>{category}</Text>
-      <Text style={S.calorieValueText}>{calorie}</Text>
-      <Text style={S.calorieUnitText}>cal</Text>
+      <FlatList data={weekData} renderItem={item => this.dayItem(item)} extraData={props} />
     </Card> 
   )
 }
@@ -36,5 +56,13 @@ const S = StyleSheet.create({
     position: 'absolute',
     right: wp(8),
     fontSize: 17
+  },
+  defaultDay: {
+
+  }, 
+  selectedDay: {
+    backgroundColor: 'red'
   }
 })
+
+export default weekSelectFooter
