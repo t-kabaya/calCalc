@@ -11,7 +11,7 @@ export default class App extends React.Component {
     isModalVisible: false,
     selectedPanelStatus: {},
     // 曜日のインデックス 0 = 月曜日, 6 = 日曜日
-    selectedWeekIndex: 0
+    selectedDay: 'tuesday'
   }
 
   onPressPanel = (panelData) => {
@@ -25,16 +25,16 @@ export default class App extends React.Component {
   }
 
   setCalorie = (calorie) => {
-    const monday = {...this.state.monday}
-    monday.calorie[0].calorie = calorie
-    this.setState({monday})
+    const selectedDay = {...this.state[this.state.selectedDay]}
+    selectedDay.calorie[0].calorie = calorie
+    this.setState({[this.state.selectedDay]: selectedDay})
   }
 
   render() {
     return (
       <Container style={styles.container}>
         <FlatList
-          data={this.state.monday.calorie}
+          data={this.state[this.state.selectedDay].calorie}
           renderItem={({item, index}) => 
             <CaloriePanel
               category={item.category}
@@ -68,60 +68,90 @@ const mockState = {
     calorie: [
       {
         category: '1日の目標カロリー',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '朝食',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '昼食',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '夕食',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '間食',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '消費カロリー',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '今日の合計',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       },
       {
         category: '一週間の平均',
-        calorie: 500,
+        calorie: 100,
         touchAble: true
       }
     ]
   },
-  // tuesday: {
-  //   breakfastPanel: {
-  //     calorie: 500
-  //   },
-  //   launchPanel: {
-  //     calorie: 500
-  //   },
-  //   dinnerPanel: {
-  //     calorie: 500
-  //   },
-  //   snackPanel: {
-  //     calorie: 500
-  //   }
-  // },
+  tuesday: {
+    calorie: [
+      {
+        category: '1日の目標カロリー',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '朝食',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '昼食',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '夕食',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '間食',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '消費カロリー',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '今日の合計',
+        calorie: 200,
+        touchAble: true
+      },
+      {
+        category: '一週間の平均',
+        calorie: 100,
+        touchAble: true
+      }
+    ]
+  },
   // wednesday: {
   //   breakfastPanel: {
   //     calorie: 500
