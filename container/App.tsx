@@ -6,33 +6,28 @@ import CaloriePanel from '../component/caloriePanel.tsx'
 import CalorieChangeModal from '../component/calorieChangeModal'
 
 export default class App extends React.Component {
-  // state={
-  //   foo: 'foo'
-  // }
   state = {
     ...mockState,
-    isModalVisible: false
+    isModalVisible: false,
+    selectedPanelStatus: {},
+    // 曜日のインデックス 0 = 月曜日, 6 = 日曜日
+    selectedWeekIndex: 0
   }
 
-  touchedCategory = 'lol'
-
   onPressPanel = (panelData) => {
-    this.setState({isModalVisible: true})
-    // alert(JSON.stringify(panelData))
-    this.touchedCategory = panelData.category
-    this.setState({modalVisible: true})
-
-    const monday = {...this.state.monday}
-    monday.calorie[0].calorie = 777
-    this.setState({monday})
+    const newSelectedPanelStatus = {category: panelData.category, calorie: panelData.calorie}
     
-
-    // alert(JSON.stringify(this.state))
-    // this.setState(newState)
+    this.setState({isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus})
   }
 
   closeModal = () => {
     this.setState({isModalVisible: false})
+  }
+
+  setCalorie = (calorie) => {
+    const monday = {...this.state.monday}
+    monday.calorie[0].calorie = calorie
+    this.setState({monday})
   }
 
   render() {
@@ -50,8 +45,10 @@ export default class App extends React.Component {
         />
         <CalorieChangeModal
           isModalVisible={this.state.isModalVisible}
-          category={this.touchedCategory}
+          category={this.state.selectedPanelStatus.category}
+          calorie={this.state.selectedPanelStatus.calorie}
           closeModal={this.closeModal}
+          setCalorie={this.setCalorie}
         />
       </Container>
     )

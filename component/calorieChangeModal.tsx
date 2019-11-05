@@ -4,26 +4,35 @@ import { Card } from 'native-base'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class calorieChangeModal extends React.Component {
+  state = {
+    calorie: 0
+  }
+
   render() {
     const props = this.props
+    const state = this.state
     return (
       <Modal
       animationType="fade"
       transparent={true}
-      // visible={props.isModalVisible}
-      visible={true}
+      visible={props.isModalVisible}
+      // visible={true}
       onRequestClose={() => {
         props.closeModal()
       }}>
       <View style={S.darkContainer}>
         <Card style={S.container}>
-          <Text style={S.categoryText}>朝食</Text>
+          <Text style={S.categoryText}>{props.category}</Text>
           <TextInput
             style={S.calorieValueText}
-            value={'777'}
+            onChangeText={calorie => this.setState({calorie: parseInt(calorie)})}
+            defaultValue={JSON.stringify(props.calorie)}
             autoFocus
             keyboardType="number-pad"
-            onEndEditing={() => props.closeModal()}
+            onEndEditing={() => {
+              props.closeModal()
+              props.setCalorie(this.state.calorie)
+            }}
           />
           <Text style={S.calorieUnitText}>cal</Text>
         </Card>
