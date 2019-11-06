@@ -16,7 +16,6 @@ export default class calorieChangeModal extends React.Component {
       animationType="fade"
       transparent={true}
       visible={props.isModalVisible}
-      // visible={true}
       onRequestClose={() => {
         props.closeModal()
       }}>

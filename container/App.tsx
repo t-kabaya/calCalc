@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, Modal, View, Text, TouchableHighlight } from 'react-native'
+import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar } from 'react-native'
 import { Container } from 'native-base'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import CaloriePanel from '../component/caloriePanel.tsx'
@@ -16,6 +16,8 @@ export default class App extends React.Component {
   }
 
   onPressPanel = (panelData) => {
+    if (!panelData.editable) return;
+
     const newSelectedPanelStatus = {category: panelData.category, calorie: panelData.calorie}
     
     this.setState({isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus})
@@ -37,7 +39,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <Container style={S.container}>
         <FlatList
           data={this.state[this.state.selectedDay].calorie}
           renderItem={({item, index}) => 
@@ -47,6 +49,7 @@ export default class App extends React.Component {
               onPressPanel={() => this.onPressPanel(item, index)} />
           } 
           extraData={this.state}
+          contentContainerStyle={S.listContainer}
         />
         <CalorieChangeModal
           isModalVisible={this.state.isModalVisible}
@@ -61,12 +64,17 @@ export default class App extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const S = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: Platform.OS == 'ios' ? 0 :  StatusBar.currentHeight
   },
+  listContainer: {
+    width: wp(100),
+    alignItems: 'center'
+  }
 })
 
 const mockState = {
@@ -75,42 +83,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -119,42 +127,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -163,42 +171,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -207,42 +215,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -251,42 +259,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -295,42 +303,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   },
@@ -339,42 +347,42 @@ const mockState = {
       {
         category: '1日の目標カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '朝食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '昼食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '夕食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '間食',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '消費カロリー',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: true
       },
       {
         category: '今日の合計',
         calorie: 200,
-        touchAble: true
+        touchAble: true, editable: false
       },
       {
         category: '一週間の平均',
         calorie: 100,
-        touchAble: true
+        touchAble: true, editable: false
       }
     ]
   }
