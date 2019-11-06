@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native'
-import { Card } from 'native-base'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
 import {dayEnum} from '../assets/enum/dayEnum'
 
@@ -16,31 +15,41 @@ const weekData = [
 
 
 const weekSelectFooter = (props) => {
-
   dayItem = ({item}) => {
     return(
       <TouchableWithoutFeedback onPress={() => props.onPressDay(item.dayKey)}>
         <View style={props.selectedDay === item.dayKey ? S.selectedDay : S.defaultDay} >
-          <Text>{item.dayName}</Text>
+          <Text style={S.dayText}>{item.dayName}</Text>
         </View>
       </TouchableWithoutFeedback>
     )
   }
 
   return (
-    <Card style={S.container}>
-      <FlatList data={weekData} renderItem={item => this.dayItem(item)} extraData={props} />
-    </Card> 
+    <View style={S.container}>
+      <FlatList
+        data={weekData}
+        renderItem={item => this.dayItem(item)}
+        horizontal
+        extraData={props}
+        contentContainerStyle={S.listContainer}
+      />
+    </View> 
   )
 }
 
 const S = StyleSheet.create({
   container: {
-    height: hp('13%'),
-    width: wp('86%'),
+    height: hp('11%'),
+    width: wp('100%'),
     backgroundColor: '#fff',
-    flexDirection: 'row',
+    // flexDirection: 'row',
+    alignItems: 'center'
+  },
+  listContainer: {
     alignItems: 'center',
+    justifyContent: 'space-between',
+    width: wp(90)
   },
   categoryText: {
     position: 'absolute',
@@ -58,10 +67,26 @@ const S = StyleSheet.create({
     fontSize: 17
   },
   defaultDay: {
-
+    borderRadius: 50,
+    width: wp(12),
+    height: wp(12),
+    justifyContent: 'center',
+    alignItems: 'center'
   }, 
   selectedDay: {
-    backgroundColor: 'red'
+    backgroundColor: '#03DACE',
+    borderRadius: 50,
+    width: wp(12),
+    height: wp(12),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  dayContainer: {
+    width: wp(10)
+  },
+  dayText: {
+    fontSize: wp(6),
+    fontWeight: 'bold'
   }
 })
 

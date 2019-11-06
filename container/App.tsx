@@ -32,7 +32,6 @@ export default class App extends React.Component {
   }
 
   onPressDay = (day) => {
-    alert(day)
     this.setState({selectedDay: day})
   }
 
