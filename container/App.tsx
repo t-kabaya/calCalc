@@ -5,6 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import CaloriePanel from '../component/caloriePanel.tsx'
 import CalorieChangeModal from '../component/calorieChangeModal'
 import WeekSelectFooter from '../component/weekSelectFooter'
+import getTodayName from '../utils/getDayUtils'
 
 export default class App extends React.Component {
   state = {
@@ -12,7 +13,7 @@ export default class App extends React.Component {
     isModalVisible: false,
     selectedPanelStatus: {},
     // 曜日
-    selectedDay: 'tuesday'
+    selectedDay: getTodayName()
   }
 
   onPressPanel = (panelData) => {
