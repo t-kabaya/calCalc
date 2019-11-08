@@ -6,6 +6,7 @@ import CaloriePanel from '../component/caloriePanel.tsx'
 import CalorieChangeModal from '../component/calorieChangeModal'
 import WeekSelectFooter from '../component/weekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
+import TodayCalorieGoal from '../component/TodayCalorieGoal'
 
 export default class App extends React.Component {
   state = {
@@ -59,6 +60,9 @@ export default class App extends React.Component {
           closeModal={this.closeModal}
           setCalorie={this.setCalorie}
         />
+
+        <TodayCalorieGoal />
+
         <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} />
       </Container>
     )
