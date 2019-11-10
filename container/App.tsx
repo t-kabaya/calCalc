@@ -22,14 +22,15 @@ export default class App extends React.Component {
     // 曜日
     selectedDay: getTodayName(),
     todaysCalorieGoal: 2000,
+    selectedPanelIndex: 0
   }
 
-  onPressPanel = (panelData) => {
+  onPressPanel = (panelData, index) => {
     if (!panelData.editable) return;
 
     const newSelectedPanelStatus = { category: panelData.category, calorie: panelData.calorie }
 
-    this.setState({ isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus })
+    this.setState({ isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus, selectedPanelIndex: index })
   }
 
   closeModal = () => {
@@ -38,7 +39,7 @@ export default class App extends React.Component {
 
   setCalorie = (calorie) => {
     const selectedDay = { ...this.state[this.state.selectedDay] }
-    selectedDay.calorie[0].calorie = calorie
+    selectedDay.calorie[this.state.selectedPanelIndex].calorie = calorie
     this.setState({ [this.state.selectedDay]: selectedDay })
   }
 
@@ -72,7 +73,7 @@ export default class App extends React.Component {
         <TodayCalorieGoal
           todaysCalorieGoal={this.state.todaysCalorieGoal}
           totalCalorie={calcTotalCalorie(this.state)}
-          restCalorie={this.state.todaysCalorieGoal - calcTotalCalorie(this.state)}
+          restCalorie={calcTotalCalorie(this.state) - this.state.todaysCalorieGoal}
         />
 
         <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} />
