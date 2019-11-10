@@ -8,7 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "date-fns": "^2.6.0",
+    "date-fns": "^2.7.0",
     "expo": "^35.0.0",
     "expo-font": "~7.0.0",
     "native-base": "^2.13.8",

@@ -8,6 +8,7 @@ import WeekSelectFooter from '../component/weekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { db } from '../utils/storageUtils.ts'
+import { startOfWeek, isBefore } from 'date-fns'
 
 const calcTotalCalorie = (state) => (
   state[state.selectedDay]
@@ -25,7 +26,7 @@ export default class App extends React.Component {
     todaysCalorieGoal: 2000,
     selectedPanelIndex: 0,
     // 一週間で最初の起動か？　もし最初の起動ならstateをリセットする。
-    isFirstLaunchInThisWeek: false
+    lastLaunchTime: null
   }
 
   // this.constructor.displayNameで、自身のクラス名を取得
@@ -79,11 +80,15 @@ export default class App extends React.Component {
 
   maybeResetState = () => {
     // 月曜日になると、stateをリセット
-    // if (this.state.selectedDay != 'monday') return
-
-    const newState = { ...this.state, ...calorieState }
-
-    this.setState({ ...newState, })
+    const lastMonday = startOfWeek(new Date, { weekStartsOn: 1 })
+    if (this.state.lastLaunchTime && isBefore(this.state.lastLaunchTime, lastMonday)) {
+      const newState = { ...this.state, ...calorieState }
+      this.setState(newState)
+      alert('lol')
+    } else {
+      this.setState({ lastLaunchTime: new Date() })
+      alert('reset')
+    }
   }
 
   render() {
