@@ -7,6 +7,7 @@ import CalorieChangeModal from '../component/calorieChangeModal'
 import WeekSelectFooter from '../component/weekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
+import { db } from '../utils/storageUtils.ts'
 
 const calcTotalCalorie = (state) => (
   state[state.selectedDay]
@@ -22,7 +23,36 @@ export default class App extends React.Component {
     // 曜日
     selectedDay: getTodayName(),
     todaysCalorieGoal: 2000,
-    selectedPanelIndex: 0
+    selectedPanelIndex: 0,
+    // 一週間で最初の起動か？　もし最初の起動ならstateをリセットする。
+    isFirstLaunchInThisWeek: false
+  }
+
+  // this.constructor.displayNameで、自身のクラス名を取得
+  className = this.constructor.displayName
+
+  componentDidMount = () => {
+    this.maybeResetState()
+    this.setInitialState()
+  }
+
+  setInitialState = async () => {
+    // react-native-storageは、読み込みがとても速い
+    db
+      .load({ key: this.className })
+      .then(res => this.setState(res))
+      .catch(err => console.warn(err))
+  }
+
+  componentDidUpdate({ }, prevState) {
+    if (this.state !== prevState) {
+      // stateに変化があったら、this.stateを丸ごと保存する。
+      // react-native-storageは速いので、丸ごと保存しても大丈夫
+      db.save({
+        key: this.className,
+        data: this.state
+      })
+    }
   }
 
   onPressPanel = (panelData, index) => {
@@ -45,6 +75,15 @@ export default class App extends React.Component {
 
   onPressDay = (day) => {
     this.setState({ selectedDay: day })
+  }
+
+  maybeResetState = () => {
+    // 月曜日になると、stateをリセット
+    // if (this.state.selectedDay != 'monday') return
+
+    const newState = { ...this.state, ...calorieState }
+
+    this.setState({ ...newState, })
   }
 
   render() {
