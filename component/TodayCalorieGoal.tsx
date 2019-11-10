@@ -6,21 +6,21 @@ const todayCalorieGoal = (props) => {
   return (
     <View style={S.container}>
       <View style={S.leftTextBlock}>
-        <Text style={S.calorieValueText}>2000</Text>
+        <Text style={S.calorieValueText}>{props.todaysCalorieGoal}</Text>
         <Text style={S.smallGrayText}>1日の目標</Text>
       </View>
 
       <Text style={S.subtractionOperatorText}>-</Text>
 
       <View style={S.centerTextBlock}>
-        <Text style={S.calorieValueText}>2000</Text>
+        <Text style={S.calorieValueText}>{props.totalCalorie}</Text>
         <Text style={S.smallGrayText}>食べたもの</Text>
       </View>
 
       <Text style={S.equalOperatorText}>＝</Text>
 
       <View style={S.rightTextBlock}>
-        <Text style={S.calorieValueText}>100</Text>
+        <Text style={S.calorieValueText}>{props.restCalorie}</Text>
         <Text style={S.smallGrayText}>残り</Text>
       </View>
     </View>

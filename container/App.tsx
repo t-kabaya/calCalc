@@ -1,42 +1,49 @@
 import React from 'react';
 import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar } from 'react-native'
 import { Container } from 'native-base'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/caloriePanel.tsx'
 import CalorieChangeModal from '../component/calorieChangeModal'
 import WeekSelectFooter from '../component/weekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 
+const calcTotalCalorie = (state) => (
+  state[state.selectedDay]
+    .calorie
+    .reduce((acc, cur) => acc + cur.calorie, 0)
+)
+
 export default class App extends React.Component {
   state = {
-    ...mockState,
+    ...calorieState,
     isModalVisible: false,
     selectedPanelStatus: {},
     // 曜日
-    selectedDay: getTodayName()
+    selectedDay: getTodayName(),
+    todaysCalorieGoal: 2000,
   }
 
   onPressPanel = (panelData) => {
     if (!panelData.editable) return;
 
-    const newSelectedPanelStatus = {category: panelData.category, calorie: panelData.calorie}
-    
-    this.setState({isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus})
+    const newSelectedPanelStatus = { category: panelData.category, calorie: panelData.calorie }
+
+    this.setState({ isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus })
   }
 
   closeModal = () => {
-    this.setState({isModalVisible: false})
+    this.setState({ isModalVisible: false })
   }
 
   setCalorie = (calorie) => {
-    const selectedDay = {...this.state[this.state.selectedDay]}
+    const selectedDay = { ...this.state[this.state.selectedDay] }
     selectedDay.calorie[0].calorie = calorie
-    this.setState({[this.state.selectedDay]: selectedDay})
+    this.setState({ [this.state.selectedDay]: selectedDay })
   }
 
   onPressDay = (day) => {
-    this.setState({selectedDay: day})
+    this.setState({ selectedDay: day })
   }
 
   render() {
@@ -44,15 +51,16 @@ export default class App extends React.Component {
       <Container style={S.container}>
         <FlatList
           data={this.state[this.state.selectedDay].calorie}
-          renderItem={({item, index}) => 
+          renderItem={({ item, index }) =>
             <CaloriePanel
               category={item.category}
               calorie={item.calorie}
               onPressPanel={() => this.onPressPanel(item, index)} />
-          } 
+          }
           extraData={this.state}
           contentContainerStyle={S.listContainer}
         />
+
         <CalorieChangeModal
           isModalVisible={this.state.isModalVisible}
           category={this.state.selectedPanelStatus.category}
@@ -61,7 +69,11 @@ export default class App extends React.Component {
           setCalorie={this.setCalorie}
         />
 
-        <TodayCalorieGoal />
+        <TodayCalorieGoal
+          todaysCalorieGoal={this.state.todaysCalorieGoal}
+          totalCalorie={calcTotalCalorie(this.state)}
+          restCalorie={this.state.todaysCalorieGoal - calcTotalCalorie(this.state)}
+        />
 
         <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} />
       </Container>
@@ -74,7 +86,7 @@ const S = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Platform.OS == 'ios' ? 0 :  StatusBar.currentHeight
+    paddingTop: Platform.OS == 'ios' ? 0 : StatusBar.currentHeight
   },
   listContainer: {
     width: wp(100),
@@ -82,312 +94,172 @@ const S = StyleSheet.create({
   }
 })
 
-const mockState = {
+const calorieState = {
   monday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 100,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 100,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 100,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 100,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 100,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 100,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 100,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   tuesday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   wednesday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   thursday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   friday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   saturday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   },
   sunday: {
     calorie: [
       {
-        category: '1日の目標カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
         category: '朝食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '昼食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '夕食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
       },
       {
         category: '間食',
-        calorie: 200,
+        calorie: 0,
         touchAble: true, editable: true
-      },
-      {
-        category: '消費カロリー',
-        calorie: 200,
-        touchAble: true, editable: true
-      },
-      {
-        category: '今日の合計',
-        calorie: 200,
-        touchAble: true, editable: false
-      },
-      {
-        category: '一週間の平均',
-        calorie: 100,
-        touchAble: true, editable: false
       }
     ]
   }
