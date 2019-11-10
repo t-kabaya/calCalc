@@ -1,30 +1,29 @@
-import { dayEnum } from '../assets/enum/dayEnum.ts'
+import { dayEnum } from '../assets/enum/dayEnum'
 
 const getTodayName = () => {
   const dayIndex = new Date().getDay()
-  
 
   switch (dayIndex) {
     case 0:
-      return dayEnum.monday
+      return dayEnum.sunday
       break
     case 1:
-      return dayEnum.tuesday
+      return dayEnum.monday
       break
     case 2:
-      return dayEnum.wednesday
+      return dayEnum.tuesday
       break
     case 3:
-      return dayEnum.thursday
+      return dayEnum.wednesday
       break
     case 4:
-      return dayEnum.friday
+      return dayEnum.thursday
       break
     case 5:
-      return dayEnum.saturday
+      return dayEnum.friday
       break
     case 6:
-      return dayEnum.sunday
+      return dayEnum.saturday
       break
   }
 }

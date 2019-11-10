@@ -1,29 +1,29 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 const todayCalorieGoal = (props) => {
   return (
     <View style={S.container}>
-      <View style={S.textBlock}>
+      <View style={S.leftTextBlock}>
         <Text style={S.calorieValueText}>2000</Text>
         <Text style={S.smallGrayText}>1日の目標</Text>
       </View>
-    
-      <Text>-</Text>
 
-      <View style={S.textBlock}>
+      <Text style={S.subtractionOperatorText}>-</Text>
+
+      <View style={S.centerTextBlock}>
         <Text style={S.calorieValueText}>2000</Text>
         <Text style={S.smallGrayText}>食べたもの</Text>
       </View>
 
-      <Text>＝</Text>
+      <Text style={S.equalOperatorText}>＝</Text>
 
-      <View style={S.textBlock}>
+      <View style={S.rightTextBlock}>
         <Text style={S.calorieValueText}>100</Text>
         <Text style={S.smallGrayText}>残り</Text>
       </View>
-    </View> 
+    </View>
   )
 }
 
@@ -34,17 +34,31 @@ const S = StyleSheet.create({
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
   },
-  textBlock: {
+  leftTextBlock: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  centerTextBlock: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  rightTextBlock: {
     justifyContent: 'center',
     alignItems: 'center'
   },
   calorieValueText: {
-    fontSize: 20
+    fontSize: wp(7)
   },
   smallGrayText: {
-    fontSize: 10
+    fontSize: wp(3)
+  },
+  subtractionOperatorText: {
+    fontSize: 20
+  },
+  equalOperatorText: {
+    fontSize: 20
   }
 })
 
