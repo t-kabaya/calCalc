@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar } from 'react-native'
+import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar, SafeAreaView } from 'react-native'
 import { Container } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/caloriePanel.tsx'
@@ -34,7 +34,7 @@ export default class App extends React.Component {
 
   componentDidMount = () => {
     this.maybeResetState()
-    this.setInitialState()
+    // this.setInitialState()
   }
 
   setInitialState = async () => {
@@ -78,22 +78,26 @@ export default class App extends React.Component {
     this.setState({ selectedDay: day })
   }
 
-  maybeResetState = () => {
+  maybeResetState = async () => {
     // 月曜日になると、stateをリセット
     const lastMonday = startOfWeek(new Date, { weekStartsOn: 1 })
-    if (this.state.lastLaunchTime && isBefore(this.state.lastLaunchTime, lastMonday)) {
-      const newState = { ...this.state, ...calorieState }
-      this.setState(newState)
-      alert('lol')
-    } else {
+    await this.setInitialState()
+
+    const shouldReset = this.state.lastLaunchTime && isBefore(this.state.lastLaunchTime, lastMonday)
+
+    if (shouldReset) {
       this.setState({ lastLaunchTime: new Date() })
       alert('reset')
+    } else {
+      const newState = { ...this.state, ...calorieState }
+      this.setState(newState)
+      alert('not reset')
     }
   }
 
   render() {
     return (
-      <Container style={S.container}>
+      <SafeAreaView style={S.container}>
         <FlatList
           data={this.state[this.state.selectedDay].calorie}
           renderItem={({ item, index }) =>
@@ -117,11 +121,11 @@ export default class App extends React.Component {
         <TodayCalorieGoal
           todaysCalorieGoal={this.state.todaysCalorieGoal}
           totalCalorie={calcTotalCalorie(this.state)}
-          restCalorie={calcTotalCalorie(this.state) - this.state.todaysCalorieGoal}
+          restCalorie={this.state.todaysCalorieGoal - calcTotalCalorie(this.state)}
         />
 
         <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} />
-      </Container>
+      </SafeAreaView>
     )
   }
 }

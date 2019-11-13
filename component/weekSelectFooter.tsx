@@ -1,22 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import {dayEnum} from '../assets/enum/dayEnum'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import { dayEnum } from '../assets/enum/dayEnum'
 
 const weekData = [
-  {dayName: '月', dayKey: dayEnum.monday},
-  {dayName: '火', dayKey: dayEnum.tuesday},
-  {dayName: '水', dayKey: dayEnum.wednesday},
-  {dayName: '木', dayKey: dayEnum.thursday},
-  {dayName: '金', dayKey: dayEnum.friday},
-  {dayName: '土', dayKey: dayEnum.saturday},
-  {dayName: '日', dayKey: dayEnum.sunday},
+  { dayName: '月', dayKey: dayEnum.monday },
+  { dayName: '火', dayKey: dayEnum.tuesday },
+  { dayName: '水', dayKey: dayEnum.wednesday },
+  { dayName: '木', dayKey: dayEnum.thursday },
+  { dayName: '金', dayKey: dayEnum.friday },
+  { dayName: '土', dayKey: dayEnum.saturday },
+  { dayName: '日', dayKey: dayEnum.sunday },
 ]
 
 
 const weekSelectFooter = (props) => {
-  dayItem = ({item}) => {
-    return(
+  dayItem = ({ item }) => {
+    return (
       <TouchableWithoutFeedback onPress={() => props.onPressDay(item.dayKey)}>
         <View style={props.selectedDay === item.dayKey ? S.selectedDay : S.defaultDay} >
           <Text style={S.dayText}>{item.dayName}</Text>
@@ -33,8 +33,9 @@ const weekSelectFooter = (props) => {
         horizontal
         extraData={props}
         contentContainerStyle={S.listContainer}
+        scrollEnabled={false}
       />
-    </View> 
+    </View>
   )
 }
 
@@ -72,7 +73,7 @@ const S = StyleSheet.create({
     height: wp(12),
     justifyContent: 'center',
     alignItems: 'center'
-  }, 
+  },
   selectedDay: {
     backgroundColor: '#03DACE',
     borderRadius: 50,
