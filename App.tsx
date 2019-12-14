@@ -1,5 +1,5 @@
-import App from './container/App'
+import Home from './container/Home'
 
 console.disableYellowBox = true
 
-export default App
+export default Home

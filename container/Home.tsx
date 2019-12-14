@@ -15,7 +15,7 @@ const calcTotalCalorie = (state) => (
     .reduce((acc, cur) => acc + cur.calorie, 0)
 )
 
-export default class App extends React.Component {
+export default class Home extends React.Component {
   state = {
     ...calorieState,
     isModalVisible: false,
