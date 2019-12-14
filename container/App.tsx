@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar, SafeAreaView } from 'react-native'
+import { StyleSheet, FlatList, Platform, StatusBar, SafeAreaView } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/CaloriePanel'
 import CalorieChangeModal from '../component/CalorieChangeModal'
 import WeekSelectFooter from '../component/WeekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
-import { db } from '../utils/storageUtils.ts'
+import { db } from '../utils/storageUtils'
 import { startOfWeek, isBefore } from 'date-fns'
 
 const calcTotalCalorie = (state) => (
@@ -36,10 +36,14 @@ export default class App extends React.Component {
   }
 
   setInitialState = async () => {
-    db
+    await db
       .load({ key: this.className })
-      .then(res => this.setState(res))
+      .then(prevState => this.setState(prevState))
       .catch(err => console.warn(err))
+
+    // TODO: とても汚い実装だ。要リファクタ。
+    // mondayなど、曜日をそのままstateに入れている。
+    this.setState({ selectedDay: getTodayName() })
   }
 
   componentDidUpdate({ }, prevState) {
@@ -81,10 +85,10 @@ export default class App extends React.Component {
     const shouldReset = this.state.lastLaunchTime && isBefore(this.state.lastLaunchTime, lastMonday)
 
     if (shouldReset) {
-      this.setState({ lastLaunchTime: new Date() })
+      const resetState = { ...this.state, ...calorieState }
+      this.setState({ ...resetState, lastLaunchTime: new Date() })
     } else {
-      const newState = { ...this.state, ...calorieState }
-      this.setState(newState)
+      this.setState({ lastLaunchTime: new Date() })
     }
   }
 
