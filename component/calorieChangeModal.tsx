@@ -1,46 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Modal, TextInput } from 'react-native'
 import { Card } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default class calorieChangeModal extends React.Component {
-  state = {
-    calorie: 0
-  }
+const CalorieChangeModal = (props) => {
+  const [calorie, setCalorie] = useState(0)
 
-  render() {
-    const props = this.props
-    const state = this.state
-    return (
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={props.isModalVisible}
-        onRequestClose={() => {
-          props.closeModal()
-        }}>
-        <View style={S.darkContainer}>
-          <Card style={S.container}>
-            <Text style={S.categoryText}>{props.category}</Text>
-            <TextInput
-              style={S.calorieValueText}
-              onChangeText={calorie => this.setState({ calorie: parseInt(calorie) })}
-              defaultValue={JSON.stringify(props.calorie)}
-              // placeholder={props.calories}
-              autoFocus
-              keyboardType="number-pad"
-              onEndEditing={() => {
-                props.closeModal()
-                props.setCalorie(this.state.calorie)
-              }}
-            />
-            <Text style={S.calorieUnitText}>cal</Text>
-          </Card>
-        </View>
-      </Modal>
-    )
-  }
+  return (
+    <Modal
+      animationType="fade"
+      transparent
+      visible={props.isModalVisible}
+      onRequestClose={() => props.closeModal()}
+    >
+      <View style={S.darkContainer}>
+        <Card style={S.container}>
+          <Text style={S.categoryText}>{props.category}</Text>
+          <TextInput
+            style={S.caloreValueText}
+            onChangeText={calorie => setCalorie(parseInt(calorie))}
+            placeholder={JSON.stringify(props.calories)}
+            autoFocus
+            keyboardType="number-pad"
+            onEndEditing={() => {
+              props.closeModal()
+              props.setCalorie(calorie)
+            }}
+          />
+          <Text style={S.calorieUnitText}>cal</Text>
+        </Card>
+      </View>
+    </Modal>
+  )
 }
+
 
 const S = StyleSheet.create({
   darkContainer: {
@@ -83,3 +76,5 @@ const S = StyleSheet.create({
     fontSize: 20
   }
 })
+
+export default CalorieChangeModal

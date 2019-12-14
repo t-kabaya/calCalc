@@ -14,7 +14,7 @@ const weekData = [
 ]
 
 
-const weekSelectFooter = (props) => {
+const WeekSelectFooter = (props) => {
   dayItem = ({ item }) => {
     return (
       <TouchableWithoutFeedback onPress={() => props.onPressDay(item.dayKey)}>
@@ -91,4 +91,4 @@ const S = StyleSheet.create({
   }
 })
 
-export default weekSelectFooter
+export default WeekSelectFooter

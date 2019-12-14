@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, FlatList, Platform, Modal, View, Text, TouchableHighlight, StatusBar, SafeAreaView } from 'react-native'
-import { Container } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import CaloriePanel from '../component/caloriePanel.tsx'
-import CalorieChangeModal from '../component/calorieChangeModal'
-import WeekSelectFooter from '../component/weekSelectFooter'
+import CaloriePanel from '../component/CaloriePanel'
+import CalorieChangeModal from '../component/CalorieChangeModal'
+import WeekSelectFooter from '../component/WeekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { db } from '../utils/storageUtils.ts'
@@ -34,11 +33,9 @@ export default class App extends React.Component {
 
   componentDidMount = () => {
     this.maybeResetState()
-    // this.setInitialState()
   }
 
   setInitialState = async () => {
-    // react-native-storageは、読み込みがとても速い
     db
       .load({ key: this.className })
       .then(res => this.setState(res))
@@ -47,8 +44,6 @@ export default class App extends React.Component {
 
   componentDidUpdate({ }, prevState) {
     if (this.state !== prevState) {
-      // stateに変化があったら、this.stateを丸ごと保存する。
-      // react-native-storageは速いので、丸ごと保存しても大丈夫
       db.save({
         key: this.className,
         data: this.state
@@ -87,11 +82,9 @@ export default class App extends React.Component {
 
     if (shouldReset) {
       this.setState({ lastLaunchTime: new Date() })
-      alert('reset')
     } else {
       const newState = { ...this.state, ...calorieState }
       this.setState(newState)
-      alert('not reset')
     }
   }
 
