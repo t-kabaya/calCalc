@@ -8,6 +8,7 @@ import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { db } from '../utils/storageUtils'
 import { startOfWeek, isBefore } from 'date-fns'
+import from '@react-native-commnity/'
 
 const calcTotalCalorie = (state) => (
   state[state.selectedDay]
@@ -31,9 +32,9 @@ export default class Home extends React.Component {
   // this.constructor.displayNameで、自身のクラス名を取得
   className = this.constructor.displayName
 
-  componentDidMount = () => {
-    this.maybeResetState()
-  }
+  // componentDidMount = () => {
+  //   this.maybeResetState()
+  // }
 
   setInitialState = async () => {
     await db
@@ -46,14 +47,14 @@ export default class Home extends React.Component {
     this.setState({ selectedDay: getTodayName() })
   }
 
-  componentDidUpdate({ }, prevState) {
-    if (this.state !== prevState) {
-      db.save({
-        key: this.className,
-        data: this.state
-      })
-    }
-  }
+  // componentDidUpdate({ }, prevState) {
+  //   if (this.state !== prevState) {
+  //     db.save({
+  //       key: this.className,
+  //       data: this.state
+  //     })
+  //   }
+  // }
 
   onPressPanel = (panelData, index) => {
     if (!panelData.editable) return;
