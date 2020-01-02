@@ -25,7 +25,7 @@ export const load = async (db: any, date: string, data: object): any => {
 }
 
 // テスト用のモックdatabase
-const mockDb = {
+export const mockDb = {
   data: new Map(),
   save: ({ key, data }) => {
     mockDb.data.set(key, data)
