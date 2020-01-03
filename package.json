@@ -5,7 +5,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "assertz",
+    "watch": "assertz -w"
   },
   "dependencies": {
     "date-fns": "^2.7.0",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.57.65",
+    "assertz": "git+https://git@github.com/t-kabaya/assertz.git",
     "babel-preset-expo": "^7.1.0",
     "typescript": "^3.6.3"
   },

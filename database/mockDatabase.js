@@ -91,7 +91,8 @@ const multiMerge = (entries, cb) => {
   if (cb) cb(null)
 }
 
-export default {
+module.exports = {
+  store,
   getItem,
   setItem,
   removeItem,
