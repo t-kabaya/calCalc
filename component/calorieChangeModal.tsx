@@ -24,7 +24,7 @@ const CalorieChangeModal = (props) => {
             keyboardType="number-pad"
             onEndEditing={() => {
               props.closeModal()
-              props.setCalorie(calorie)
+              props.setCalorie(props.category, calorie)
             }}
           />
           <Text style={S.calorieUnitText}>cal</Text>

@@ -20,8 +20,10 @@ const useCalorieState = () => {
 
 const useModalState = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [modalCategory, setModalCategory] = useState('')
+  const [modalCalorie, setModalCalorie] = useState(0)
 
-  return { isModalVisible, setIsModalVisible }
+  return { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie }
 }
 
 const useSelectedDayState = () => {
@@ -31,23 +33,58 @@ const useSelectedDayState = () => {
 }
 
 const calcTotalCalorie = () => {
-  const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
+  const { breakfastCal, launchCal, dinnerCal, snackCal, } = useCalorieState()
 
   return breakfastCal + launchCal + dinnerCal + snackCal
 }
 
 const todaysCalorieGoal = 2000
 
+const closeModal = () => {
+  this.setState({ isModalVisible: false })
+}
+
 const HookedHome = () => {
   const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
-  const { isModalVisible, setIsModalVisible } = useModalState()
+  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie } = useModalState()
+
+  const onPressPanel = (category, calorie) => {
+    setModalCategory(category)
+    setModalCalorie(calorie)
+    setIsModalVisible(true)
+  }
+
+  const setCalorie = (category, calorie) => {
+
+    switch (category) {
+      case '朝食':
+        setBreakFastCal(calorie)
+        console.log(calorie)
+        break;
+      case '昼食':
+        setLaunchCal(calorie)
+        break;
+      case '夕食':
+        setDinnerCal(calorie)
+        break;
+      case 'おやつ':
+        setSnackCal(calorie)
+        break;
+
+
+      default:
+        break;
+    }
+    setIsModalVisible(false)
+  }
+
 
   return (
     <SafeAreaView style={S.container}>
       <CaloriePanel
         category={'朝食'}
         calorie={breakfastCal}
-        onPressPanel={() => console.log(777)} />
+        onPressPanel={() => onPressPanel('朝食', 0)} />
       <CaloriePanel
         category={'昼食'}
         calorie={launchCal}
@@ -61,13 +98,14 @@ const HookedHome = () => {
         calorie={snackCal}
         onPressPanel={() => console.log(777)} />
 
-      {/* <CalorieChangeModal
-        isModalVisible={this.state.isModalVisible}
-        category={this.state.selectedPanelStatus.category}
-        calorie={this.state.selectedPanelStatus.calorie}
-        closeModal={this.closeModal}
-        setCalorie={this.setCalorie}
-      /> */}
+      <CalorieChangeModal
+        isModalVisible={isModalVisible}
+        category={modalCategory}
+        calorie={modalCalorie}
+
+        closeModal={() => setIsModalVisible(false)}
+        setCalorie={setCalorie}
+      />
 
       <TodayCalorieGoal
         todaysCalorieGoal={todaysCalorieGoal}
