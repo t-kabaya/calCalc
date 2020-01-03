@@ -13,9 +13,8 @@ const useCalorieState = () => {
   const [breakfastCal, setBreakFastCal] = useState(0)
   const [launchCal, setLaunchCal] = useState(0)
   const [dinnerCal, setDinnerCal] = useState(0)
-  const [snackCal, setSnackCal] = useState(0)
 
-  return { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal }
+  return { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal }
 }
 
 const useModalState = () => {
@@ -30,54 +29,138 @@ const useSelectedDayState = () => {
   return { selectedDay, setSelectedDay }
 }
 
-const calcTotalCalorie = () => {
-  const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
-
-  return breakfastCal + launchCal + dinnerCal + snackCal
-}
+const calcTotalCalorie = (state) => (
+  state[state.selectedDay]
+    .calorie
+    .reduce((acc, cur) => acc + cur.calorie, 0)
+)
 
 const todaysCalorieGoal = 2000
 
+// export default class Home extends React.Component {
+//   state = {
+//     breakfastCal: 0,
+//     launchCal: 0,
+//     isModalVisible: false,
+//     // フッターの曜日選択で必要
+//     selectedDay: getTodayName(),
+
+
+//     ...calorieState,
+
+//     selectedPanelStatus: {},
+//     // 曜日
+//     selectedPanelIndex: 0,
+//     // 一週間で最初の起動か？　もし最初の起動ならstateをリセットする。
+//     lastLaunchTime: null
+//   }
+
+//   // this.constructor.displayNameで、自身のクラス名を取得
+//   className = this.constructor.displayName
+
+//   // componentDidMount = () => {
+//   //   this.maybeResetState()
+//   // }
+
+//   setInitialState = async () => {
+//     await db
+//       .load({ key: this.className })
+//       .then(prevState => this.setState(prevState))
+//       .catch(err => console.warn(err))
+
+//     // TODO: とても汚い実装だ。要リファクタ。
+//     // mondayなど、曜日をそのままstateに入れている。
+//     this.setState({ selectedDay: getTodayName() })
+//   }
+
+//   // componentDidUpdate({ }, prevState) {
+//   //   if (this.state !== prevState) {
+//   //     db.save({
+//   //       key: this.className,
+//   //       data: this.state
+//   //     })
+//   //   }
+//   // }
+
+//   onPressPanel = (panelData, index) => {
+//     if (!panelData.editable) return;
+
+//     const newSelectedPanelStatus = { category: panelData.category, calorie: panelData.calorie }
+
+//     this.setState({ isModalVisible: true, selectedPanelStatus: newSelectedPanelStatus, selectedPanelIndex: index })
+//   }
+
+//   closeModal = () => {
+//     this.setState({ isModalVisible: false })
+//   }
+
+//   setCalorie = (calorie) => {
+//     const selectedDay = { ...this.state[this.state.selectedDay] }
+//     selectedDay.calorie[this.state.selectedPanelIndex].calorie = calorie
+//     this.setState({ [this.state.selectedDay]: selectedDay })
+//   }
+
+//   onPressDay = (day) => {
+//     this.setState({ selectedDay: day })
+//   }
+
+//   maybeResetState = async () => {
+//     // 月曜日になると、stateをリセット
+//     const lastMonday = startOfWeek(new Date, { weekStartsOn: 1 })
+//     await this.setInitialState()
+
+//     const shouldReset = this.state.lastLaunchTime && isBefore(this.state.lastLaunchTime, lastMonday)
+
+//     if (shouldReset) {
+//       const resetState = { ...this.state, ...calorieState }
+//       this.setState({ ...resetState, lastLaunchTime: new Date() })
+//     } else {
+//       this.setState({ lastLaunchTime: new Date() })
+//     }
+//   }
+
+//   render() {
+//     return (
+//       <SafeAreaView style={S.container}>
+//         {/* 朝食 */}
+//         <CaloriePanel>
+
+//           {/* tyuusyoku */}
+
+//         <FlatList
+//           data={this.state[this.state.selectedDay].calorie}
+//           renderItem={({ item, index }) =>
+//             <CaloriePanel
+//               category={item.category}
+//               calorie={item.calorie}
+//               onPressPanel={() => this.onPressPanel(item, index)} />
+//           }
+//           extraData={this.state}
+//           contentContainerStyle={S.listContainer}
+//         />
+
+//         <CalorieChangeModal
+//           isModalVisible={this.state.isModalVisible}
+//           category={this.state.selectedPanelStatus.category}
+//           calorie={this.state.selectedPanelStatus.calorie}
+//           closeModal={this.closeModal}
+//           setCalorie={this.setCalorie}
+//         />
+
+//         <TodayCalorieGoal
+//           todaysCalorieGoal={todaysCalorieGoal}
+//           totalCalorie={calcTotalCalorie(this.state)}
+//           restCalorie={todaysCalorieGoal - calcTotalCalorie(this.state)}
+//         />
+
+//         <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} />
+//       </SafeAreaView>
+//     )
+//   }
+// }
+
 const HookedHome = () => {
-  const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
-  const { isModalVisible, setIsModalVisible } = useModalState()
 
-  return (
-    <SafeAreaView style={S.container}>
-      <CaloriePanel
-        category={'朝食'}
-        calorie={breakfastCal}
-        onPressPanel={() => console.log(777)} />
-      <CaloriePanel
-        category={'昼食'}
-        calorie={launchCal}
-        onPressPanel={() => console.log(777)} />
-      <CaloriePanel
-        category={'夕食'}
-        calorie={dinnerCal}
-        onPressPanel={() => console.log(777)} />
-      <CaloriePanel
-        category={'おやつ'}
-        calorie={snackCal}
-        onPressPanel={() => console.log(777)} />
-
-      {/* <CalorieChangeModal
-        isModalVisible={this.state.isModalVisible}
-        category={this.state.selectedPanelStatus.category}
-        calorie={this.state.selectedPanelStatus.calorie}
-        closeModal={this.closeModal}
-        setCalorie={this.setCalorie}
-      /> */}
-
-      <TodayCalorieGoal
-        todaysCalorieGoal={todaysCalorieGoal}
-        totalCalorie={calcTotalCalorie()}
-        restCalorie={todaysCalorieGoal - calcTotalCalorie()}
-      />
-
-      {/* <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} /> */}
-    </SafeAreaView>
-  )
 }
 
 export default HookedHome
