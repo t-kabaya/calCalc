@@ -8,95 +8,66 @@ import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { db } from '../utils/storageUtils'
 import { startOfWeek, isBefore } from 'date-fns'
-
-const useCalorieState = () => {
-  const [breakfastCal, setBreakFastCal] = useState(0)
-  const [launchCal, setLaunchCal] = useState(0)
-  const [dinnerCal, setDinnerCal] = useState(0)
-  const [snackCal, setSnackCal] = useState(0)
-
-  return { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal }
-}
-
-const useModalState = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [modalCategory, setModalCategory] = useState('')
-  const [modalCalorie, setModalCalorie] = useState(0)
-
-  return { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie }
-}
-
-const useSelectedDayState = () => {
-  const [selectedDay, setSelectedDay] = useState(getTodayName())
-
-  return { selectedDay, setSelectedDay }
-}
-
-const calcTotalCalorie = () => {
-  const { breakfastCal, launchCal, dinnerCal, snackCal, } = useCalorieState()
-
-  return breakfastCal + launchCal + dinnerCal + snackCal
-}
+import { useCalorieState, useModalState, useSelectedDayState } from '../hook/HomeHook'
+import { categoryEnum } from '../assets/enum/categoryEnum.ts'
 
 const todaysCalorieGoal = 2000
 
-const closeModal = () => {
-  this.setState({ isModalVisible: false })
-}
-
-const HookedHome = () => {
+const HomeContainer = () => {
   const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
   const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie } = useModalState()
+  const { selectedDay, setSelectedDay } = useSelectedDayState()
 
-  const onPressPanel = (category, calorie) => {
+  const onPressPanel = (category) => {
     setModalCategory(category)
-    setModalCalorie(calorie)
     setIsModalVisible(true)
   }
 
   const setCalorie = (category, calorie) => {
 
     switch (category) {
-      case '朝食':
+      case categoryEnum.breakFast:
         setBreakFastCal(calorie)
         console.log(calorie)
         break;
-      case '昼食':
+      case categoryEnum.launch:
         setLaunchCal(calorie)
         break;
-      case '夕食':
+      case categoryEnum.dinner:
         setDinnerCal(calorie)
         break;
-      case 'おやつ':
+      case categoryEnum.snack:
         setSnackCal(calorie)
         break;
-
-
-      default:
-        break;
     }
+
     setIsModalVisible(false)
   }
 
+  const totalCalorie = breakfastCal + launchCal + dinnerCal + snackCal
+
+  const onPressDay = (dayName) => {
+    setSelectedDay(dayName)
+  }
 
   return (
     <SafeAreaView style={S.container}>
       <CaloriePanel
         category={'朝食'}
         calorie={breakfastCal}
-        onPressPanel={() => onPressPanel('朝食', 0)} />
+        onPressPanel={() => onPressPanel(categoryEnum.breakFast)} />
       <CaloriePanel
         category={'昼食'}
         calorie={launchCal}
-        onPressPanel={() => console.log(777)} />
+        onPressPanel={() => onPressPanel(categoryEnum.launch)} />
       <CaloriePanel
         category={'夕食'}
         calorie={dinnerCal}
-        onPressPanel={() => console.log(777)} />
+        onPressPanel={() => onPressPanel(categoryEnum.dinner)} />
       <CaloriePanel
         category={'おやつ'}
         calorie={snackCal}
-        onPressPanel={() => console.log(777)} />
+        onPressPanel={() => onPressPanel(categoryEnum.snack)} />
 
       <CalorieChangeModal
         isModalVisible={isModalVisible}
@@ -109,16 +80,16 @@ const HookedHome = () => {
 
       <TodayCalorieGoal
         todaysCalorieGoal={todaysCalorieGoal}
-        totalCalorie={calcTotalCalorie()}
-        restCalorie={todaysCalorieGoal - calcTotalCalorie()}
+        totalCalorie={totalCalorie}
+        restCalorie={todaysCalorieGoal - totalCalorie}
       />
 
-      {/* <WeekSelectFooter onPressDay={this.onPressDay} selectedDay={this.state.selectedDay} /> */}
+      <WeekSelectFooter onPressDay={onPressDay} selectedDay={selectedDay} />
     </SafeAreaView>
   )
 }
 
-export default HookedHome
+export default HomeContainer
 
 const S = StyleSheet.create({
   container: {
@@ -132,174 +103,3 @@ const S = StyleSheet.create({
     alignItems: 'center'
   }
 })
-
-const calorieState = {
-  monday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  tuesday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  wednesday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  thursday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  friday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  saturday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  },
-  sunday: {
-    calorie: [
-      {
-        category: '朝食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '昼食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '夕食',
-        calorie: 0,
-        touchAble: true, editable: true
-      },
-      {
-        category: '間食',
-        calorie: 0,
-        touchAble: true, editable: true
-      }
-    ]
-  }
-}

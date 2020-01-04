@@ -5,5 +5,17 @@ material iconのプラスボタンを設置する。
 一週間のリセット機能をつける。
 
 今やること
-google play consoleへの入力作業。とandroidのビルド
+asyncStorageのkeyにdatevalueに、現在のstate
 
+stateは、今日の分しか保持しないように変更。
+過去は、全て、asyncStorageから読み出す。
+これによりソースコードがスッキリする。
+
+storageの型
+で良いかな
+
+key: 'calorieState' + '20200101'
+value: 
+
+超巨大なhooksを作成して、それを使いまわしたいな。（reduxみたいに）
+database以外の箇所をリファクタリングする。
