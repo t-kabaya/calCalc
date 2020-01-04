@@ -6,7 +6,7 @@ import CalorieChangeModal from '../component/CalorieChangeModal'
 import WeekSelectFooter from '../component/WeekSelectFooter'
 import getTodayName from '../utils/getDayUtils'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
-import { db } from '../utils/storageUtils'
+import { db, load, save } from '../database/database.ts'
 import { startOfWeek, isBefore } from 'date-fns'
 import { useCalorieState, useModalState, useSelectedDayState } from '../hook/HomeHook'
 import { categoryEnum } from '../assets/enum/categoryEnum.ts'
@@ -16,7 +16,7 @@ const todaysCalorieGoal = 2000
 const HomeContainer = () => {
   const { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
   const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie } = useModalState()
-  const { selectedDay, setSelectedDay } = useSelectedDayState()
+  const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
 
   const onPressPanel = (category) => {
     setModalCategory(category)
@@ -42,12 +42,23 @@ const HomeContainer = () => {
     }
 
     setIsModalVisible(false)
+    // dbへと保存
+    save(db, selectedDateStr, { breakfastCal, launchCal, dinnerCal, snackCal })
   }
 
   const totalCalorie = breakfastCal + launchCal + dinnerCal + snackCal
 
-  const onPressDay = (dayName) => {
-    setSelectedDay(dayName)
+  const onPressDay = async (dayIndex) => {
+    // TODO: 曜日と、日付を両方管理しているので、二重管理になる。要リファクタ。
+    const diffOfDate = dayIndex - selectedDayIndex
+    await setDateByDiff(diffOfDate)
+    // await setSelectedDateStr()
+    // 20190101
+    const calorieState = await load(db, selectedDateStr)
+    setBreakFastCal(calorieState.breakFastCal)
+    setLaunchCal(calorieState.launchCal)
+    setDinnerCal(calorieState.dinnerCal)
+    setSnackCal(calorieState.snackCal)
   }
 
   return (
@@ -84,7 +95,7 @@ const HomeContainer = () => {
         restCalorie={todaysCalorieGoal - totalCalorie}
       />
 
-      <WeekSelectFooter onPressDay={onPressDay} selectedDay={selectedDay} />
+      <WeekSelectFooter onPressDay={onPressDay} selectedDayIndex={selectedDayIndex} />
     </SafeAreaView>
   )
 }

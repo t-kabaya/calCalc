@@ -4,21 +4,21 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { dayEnum } from '../assets/enum/dayEnum'
 
 const weekData = [
+  { dayName: '日', dayKey: dayEnum.sunday },
   { dayName: '月', dayKey: dayEnum.monday },
   { dayName: '火', dayKey: dayEnum.tuesday },
   { dayName: '水', dayKey: dayEnum.wednesday },
   { dayName: '木', dayKey: dayEnum.thursday },
   { dayName: '金', dayKey: dayEnum.friday },
   { dayName: '土', dayKey: dayEnum.saturday },
-  { dayName: '日', dayKey: dayEnum.sunday },
 ]
 
 
 const WeekSelectFooter = (props) => {
-  dayItem = ({ item }) => {
+  dayItem = ({ item, index }) => {
     return (
-      <TouchableWithoutFeedback onPress={() => props.onPressDay(item.dayKey)}>
-        <View style={props.selectedDay === item.dayKey ? S.selectedDay : S.defaultDay} >
+      <TouchableWithoutFeedback onPress={() => props.onPressDay(index)}>
+        <View style={props.selectedDayIndex === index ? S.selectedDay : S.defaultDay} >
           <Text style={S.dayText}>{item.dayName}</Text>
         </View>
       </TouchableWithoutFeedback>

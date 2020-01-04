@@ -1,15 +1,16 @@
-// const { AsyncStorage } = require('react-native')
-// const Storage = require('react-native-storage')
+const { AsyncStorage } = require('react-native')
+import Storage from 'react-native-storage'
 // import { any } from 'prop-types'
 // import { isNullOrUndefined } from 'util'
 
-// exports.db = new Storage({ storageBackend: AsyncStorage  })
+exports.db = new Storage({ storageBackend: AsyncStorage })
+
 // statelessな実装にして、テスタビリティを確保している。
 // そのため、同じファイル内にあるdbを一旦exportしてから使用している。
 
 // date-fnsのparseと、formatを使用し、可逆的な、Dateの保存を実現
 
-exports.keyPrefix = 'calorieState'
+const keyPrefix = 'calorieState'
 
 // export const save = (db: any, date: string, data: object): void => {
 //   db.save({
@@ -39,10 +40,15 @@ exports.save = async (db, date, value) => {
 exports.load = async (db, date) => {
   try {
     const item = await db.getItem(keyPrefix + date)
-    return item
-  } catch {
-    console.error('error at load')
-    return null
+    return JSON.parse(item)
+  } catch (e) {
+    console.error('error at load: ' + e)
+    return {
+      breakFastCal: 0,
+      launchCal: 0,
+      dinnerCal: 0,
+      snackCal: 0
+    }
   }
 }
 

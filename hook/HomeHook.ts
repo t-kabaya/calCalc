@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { startOfWeek, isBefore, format } from 'date-fns'
+import { startOfWeek, isBefore, format, parse, addDays } from 'date-fns'
 import getTodayName from '../utils/getDayUtils'
 // import {save, load} from '../database/database'
 
@@ -42,7 +42,22 @@ export const useModalState = () => {
 }
 
 export const useSelectedDayState = () => {
-  const [selectedDay, setSelectedDay] = useState(getTodayName())
+  const [selectedDateStr, setSelectedDateStr] = useState(
+    // date-fnsのparseで使用するため、月/日/年と言う並び順にしている。
+    format(new Date(), 'MM/dd/yyyy')
+  )
 
-  return { selectedDay, setSelectedDay }
+  const setDateByDiff = diffOfDate => {
+    const newSelectedDate = addDays(new Date(selectedDateStr), diffOfDate)
+    setSelectedDateStr(format(newSelectedDate, 'MM/dd/yyyy'))
+  }
+
+  const selectedDayIndex = new Date(selectedDateStr).getDay()
+
+  return {
+    selectedDayIndex,
+    selectedDateStr,
+    setSelectedDateStr,
+    setDateByDiff
+  }
 }
