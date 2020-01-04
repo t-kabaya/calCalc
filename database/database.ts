@@ -44,7 +44,7 @@ exports.load = async (db, date) => {
   } catch (e) {
     console.error('error at load: ' + e)
     return {
-      breakFastCal: 0,
+      breakfastCal: 0,
       launchCal: 0,
       dinnerCal: 0,
       snackCal: 0

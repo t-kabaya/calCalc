@@ -26,7 +26,7 @@ const HomeContainer = () => {
   const setCalorie = (category, calorie) => {
 
     switch (category) {
-      case categoryEnum.breakFast:
+      case categoryEnum.breakfast:
         setBreakFastCal(calorie)
         console.log(calorie)
         break;
@@ -55,7 +55,7 @@ const HomeContainer = () => {
     // await setSelectedDateStr()
     // 20190101
     const calorieState = await load(db, selectedDateStr)
-    setBreakFastCal(calorieState.breakFastCal)
+    setBreakFastCal(calorieState.breakfastCal)
     setLaunchCal(calorieState.launchCal)
     setDinnerCal(calorieState.dinnerCal)
     setSnackCal(calorieState.snackCal)
@@ -66,7 +66,7 @@ const HomeContainer = () => {
       <CaloriePanel
         category={'朝食'}
         calorie={breakfastCal}
-        onPressPanel={() => onPressPanel(categoryEnum.breakFast)} />
+        onPressPanel={() => onPressPanel(categoryEnum.breakfast)} />
       <CaloriePanel
         category={'昼食'}
         calorie={launchCal}
