@@ -10,11 +10,11 @@ import { db } from '../utils/storageUtils'
 import { startOfWeek, isBefore } from 'date-fns'
 
 const useCalorieState = () => {
-  const [breakfastCal, setBreakFastCal] = useState(0)
+  const [breakfastCal, setBreakfastCal] = useState(0)
   const [launchCal, setLaunchCal] = useState(0)
   const [dinnerCal, setDinnerCal] = useState(0)
 
-  return { breakfastCal, setBreakFastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal }
+  return { breakfastCal, setBreakfastCal, launchCal, setLaunchCal, dinnerCal, setDinnerCal }
 }
 
 const useModalState = () => {

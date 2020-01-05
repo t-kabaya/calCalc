@@ -1,30 +1,42 @@
 import { useState } from 'react'
-import { startOfWeek, isBefore, format, parse, addDays } from 'date-fns'
-import getTodayName from '../utils/getDayUtils'
-// import {save, load} from '../database/database'
+import { format, addDays } from 'date-fns'
 
-// var result = format(
-//   new Date(),
-//   'YYYYMMDD'
-// )
+// @param [[hookname, initialState]]
+const hookFactory = (inputs: any) => {
+  const hooks = {}
+
+  inputs.forEach(input => {
+    const [state, setState] = useState(input[1])
+    hooks[input[0]] = state
+    hooks['set' + capitalize(input[0])] = setState
+  })
+
+  return hooks
+}
+
+const capitalize = (s: string) => {
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 export const useCalorieState = () => {
-  const [breakfastCal, setBreakFastCal] = useState(0)
-  const [lunchCal, setLunchCal] = useState(0)
-  const [dinnerCal, setDinnerCal] = useState(0)
-  const [snackCal, setSnackCal] = useState(0)
+  const inputs = [
+    ['lunchCal', 0],
+    ['breakfastCal', 0],
+    ['dinnerCal', 0],
+    ['snackCal', 0]
+  ]
 
-  const totalCalorie = breakfastCal + lunchCal + dinnerCal + snackCal
+  // const [breakfastCal, setBreakfastCal] = useState(0)
+  // // const [lunchCal, setLunchCal] = useState(0)
+  // const [dinnerCal, setDinnerCal] = useState(0)
+  // // const [snackCal, setSnackCal] = useState(0)
+  const hooks = hookFactory(inputs)
+
+  const totalCalorie =
+    hooks.breakfastCal + hooks.lunchCal + hooks.dinnerCal + hooks.snackCal
 
   return {
-    breakfastCal,
-    setBreakFastCal,
-    lunchCal,
-    setLunchCal,
-    dinnerCal,
-    setDinnerCal,
-    snackCal,
-    setSnackCal,
+    ...hooks,
     totalCalorie
   }
 }

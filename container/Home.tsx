@@ -13,7 +13,7 @@ import { createCurrentDateStr } from '../logic/HomeLogic'
 const todaysCalorieGoal = 2000
 
 const HomeContainer = () => {
-  const { breakfastCal, setBreakFastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
+  const { breakfastCal, setBreakfastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
   const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie, onPressPanel } = useModalState()
   const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
 
@@ -29,7 +29,7 @@ const HomeContainer = () => {
 
     switch (category) {
       case categoryEnum.breakfast:
-        setBreakFastCal(calorie)
+        setBreakfastCal(calorie)
         newCalories.breakfastCal = calorie
         break;
       case categoryEnum.lunch:
@@ -66,7 +66,7 @@ const HomeContainer = () => {
     // await setSelectedDateStr()
     // 20190101
     const calorieState = await loadCalories(AsyncStorage, currentDateStr)
-    setBreakFastCal(calorieState.breakfastCal)
+    setBreakfastCal(calorieState.breakfastCal)
     setLunchCal(calorieState.lunchCal)
     setDinnerCal(calorieState.dinnerCal)
     setSnackCal(calorieState.snackCal)
