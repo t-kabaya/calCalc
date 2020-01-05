@@ -13,14 +13,9 @@ import { createCurrentDateStr } from '../logic/HomeLogic'
 const todaysCalorieGoal = 2000
 
 const HomeContainer = () => {
-  const { breakfastCal, setBreakFastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal } = useCalorieState()
-  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie } = useModalState()
+  const { breakfastCal, setBreakFastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
+  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie, onPressPanel } = useModalState()
   const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
-
-  const onPressPanel = (category: string) => {
-    setModalCategory(category)
-    setIsModalVisible(true)
-  }
 
   const setCalorie = (category: string, calorie: number) => {
 
@@ -55,8 +50,6 @@ const HomeContainer = () => {
     // dbへと保存
     saveCalories(AsyncStorage, selectedDateStr, newCalories)
   }
-
-  const totalCalorie = breakfastCal + lunchCal + dinnerCal + snackCal
 
   const onPressDay = async (dayIndex) => {
     // TODO: 曜日と、日付を両方管理しているので、二重管理になる。要リファクタ。

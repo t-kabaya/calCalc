@@ -14,6 +14,8 @@ export const useCalorieState = () => {
   const [dinnerCal, setDinnerCal] = useState(0)
   const [snackCal, setSnackCal] = useState(0)
 
+  const totalCalorie = breakfastCal + lunchCal + dinnerCal + snackCal
+
   return {
     breakfastCal,
     setBreakFastCal,
@@ -22,7 +24,8 @@ export const useCalorieState = () => {
     dinnerCal,
     setDinnerCal,
     snackCal,
-    setSnackCal
+    setSnackCal,
+    totalCalorie
   }
 }
 
@@ -31,13 +34,19 @@ export const useModalState = () => {
   const [modalCategory, setModalCategory] = useState('')
   const [modalCalorie, setModalCalorie] = useState(0)
 
+  const onPressPanel = (category: string) => {
+    setModalCategory(category)
+    setIsModalVisible(true)
+  }
+
   return {
     isModalVisible,
     setIsModalVisible,
     modalCategory,
     setModalCategory,
     modalCalorie,
-    setModalCalorie
+    setModalCalorie,
+    onPressPanel
   }
 }
 
