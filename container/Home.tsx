@@ -18,6 +18,7 @@ const HomeContainer = () => {
   const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
 
   const setCalorie = (category: string, calorie: number) => {
+    console.log(category)
 
     let newCalories = {
       breakfastCal,
@@ -30,7 +31,6 @@ const HomeContainer = () => {
       case categoryEnum.breakfast:
         setBreakFastCal(calorie)
         newCalories.breakfastCal = calorie
-        console.log(calorie)
         break;
       case categoryEnum.lunch:
         setLunchCal(calorie)
@@ -38,11 +38,11 @@ const HomeContainer = () => {
         break;
       case categoryEnum.dinner:
         setDinnerCal(calorie)
-        newCalories.breakfastCal = calorie
+        newCalories.dinnerCal = calorie
         break;
       case categoryEnum.snack:
         setSnackCal(calorie)
-        newCalories.breakfastCal = calorie
+        newCalories.snackCal = calorie
         break;
     }
 
