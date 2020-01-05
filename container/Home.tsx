@@ -8,6 +8,7 @@ import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { loadCalories, saveCalories } from '../database/database'
 import { useCalorieState, useModalState, useSelectedDayState } from '../hook/HomeHook'
 import { categoryEnum } from '../assets/enum/categoryEnum'
+import { createCurrentDateStr } from '../logic/HomeLogic'
 
 const todaysCalorieGoal = 2000
 
@@ -60,11 +61,18 @@ const HomeContainer = () => {
   const onPressDay = async (dayIndex) => {
     // TODO: 曜日と、日付を両方管理しているので、二重管理になる。要リファクタ。
     const diffOfDate = dayIndex - selectedDayIndex
-    // console.log({}})
-    const newDateStr: string = setDateByDiff(diffOfDate)
+    console.log({ dayIndex })
+    console.log({ selectedDayIndex })
+
+    const currentDateStr = createCurrentDateStr(dayIndex, new Date())
+
+    // 今日の日付のindexを取得。
+    // dayIndexと、sele
+    // setDateByDiff(diffOfDate)
+    setSelectedDateStr(currentDateStr)
     // await setSelectedDateStr()
     // 20190101
-    const calorieState = await loadCalories(AsyncStorage, newDateStr)
+    const calorieState = await loadCalories(AsyncStorage, currentDateStr)
     setBreakFastCal(calorieState.breakfastCal)
     setLunchCal(calorieState.lunchCal)
     setDinnerCal(calorieState.dinnerCal)
