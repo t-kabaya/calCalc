@@ -1,54 +1,59 @@
-const { AsyncStorage } = require('react-native')
-import Storage from 'react-native-storage'
+import { AsyncStorage } from 'react-native'
+
+// const { AsyncStorage } = require('react-native')
+// const Storage = require('react-native-storage')
 // import { any } from 'prop-types'
 // import { isNullOrUndefined } from 'util'
-
-exports.db = new Storage({ storageBackend: AsyncStorage })
 
 // statelessな実装にして、テスタビリティを確保している。
 // そのため、同じファイル内にあるdbを一旦exportしてから使用している。
 
 // date-fnsのparseと、formatを使用し、可逆的な、Dateの保存を実現
 
-const keyPrefix = 'calorieState'
+type CaloriesType = {
+  breakfastCal: number
+  lunchCal: number
+  dinnerCal: number
+  snackCal: number
+}
 
-// export const save = (db: any, date: string, data: object): void => {
-//   db.save({
-//     key: keyPrefix + date, // Note: Do not use underscore("_") in key!
-//     data
-//   })
-// }
-exports.save = async (db, date, value) => {
+const initialCalories = {
+  breakfastCal: 0,
+  lunchCal: 0,
+  dinnerCal: 0,
+  snackCal: 0
+}
+
+export const keyPrefix = 'calorieState'
+
+export const saveCalories = async (
+  db: AsyncStorage,
+  date: string,
+  value: CaloriesType
+): Promise<void> => {
   try {
-    const key = keyPrefix + date
-    await db.setItem(key, JSON.stringify(value))
-    return true
+    console.log('save: ' + date + JSON.stringify(value))
+    await db.setItem(keyPrefix + date, JSON.stringify(value))
   } catch {
     console.error('error at save')
   }
 }
 
-// export const load = async (db: any, date: string, data: object): any => {
-//   const loadResult = await db.load({
-//     key: keyPrefix + date, // Note: Do not use underscore("_") in key!
-//     data
-//   })
-
-//   return loadResult
-// }
-
-exports.load = async (db, date) => {
+export const loadCalories = async (
+  db: AsyncStorage,
+  date: string
+): Promise<CaloriesType> => {
   try {
     const item = await db.getItem(keyPrefix + date)
-    return JSON.parse(item)
-  } catch (e) {
-    console.error('error at load: ' + e)
-    return {
-      breakfastCal: 0,
-      launchCal: 0,
-      dinnerCal: 0,
-      snackCal: 0
+    if (item) {
+      console.log('load: ' + date + JSON.stringify(item))
+      return JSON.parse(item)
+    } else {
+      return initialCalories
     }
+  } catch {
+    console.error('error at load')
+    return initialCalories
   }
 }
 

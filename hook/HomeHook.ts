@@ -10,15 +10,15 @@ import getTodayName from '../utils/getDayUtils'
 
 export const useCalorieState = () => {
   const [breakfastCal, setBreakFastCal] = useState(0)
-  const [launchCal, setLaunchCal] = useState(0)
+  const [lunchCal, setLunchCal] = useState(0)
   const [dinnerCal, setDinnerCal] = useState(0)
   const [snackCal, setSnackCal] = useState(0)
 
   return {
     breakfastCal,
     setBreakFastCal,
-    launchCal,
-    setLaunchCal,
+    lunchCal,
+    setLunchCal,
     dinnerCal,
     setDinnerCal,
     snackCal,
@@ -49,7 +49,10 @@ export const useSelectedDayState = () => {
 
   const setDateByDiff = diffOfDate => {
     const newSelectedDate = addDays(new Date(selectedDateStr), diffOfDate)
-    setSelectedDateStr(format(newSelectedDate, 'MM/dd/yyyy'))
+    const currentDate: string = format(newSelectedDate, 'MM/dd/yyyy')
+    setSelectedDateStr(currentDate)
+
+    return selectedDateStr
   }
 
   const selectedDayIndex = new Date(selectedDateStr).getDay()
