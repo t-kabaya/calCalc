@@ -19,18 +19,14 @@ const capitalize = (s: string) => {
 }
 
 export const useCalorieState = () => {
-  const inputs = [
+  const state = [
     ['lunchCal', 0],
     ['breakfastCal', 0],
     ['dinnerCal', 0],
     ['snackCal', 0]
   ]
 
-  // const [breakfastCal, setBreakfastCal] = useState(0)
-  // // const [lunchCal, setLunchCal] = useState(0)
-  // const [dinnerCal, setDinnerCal] = useState(0)
-  // // const [snackCal, setSnackCal] = useState(0)
-  const hooks = hookFactory(inputs)
+  const hooks = hookFactory(state)
 
   const totalCalorie =
     hooks.breakfastCal + hooks.lunchCal + hooks.dinnerCal + hooks.snackCal

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/CaloriePanel'
@@ -9,13 +9,19 @@ import { loadCalories, saveCalories } from '../database/database'
 import { useCalorieState, useModalState, useSelectedDayState } from '../hook/HomeHook'
 import { categoryEnum } from '../assets/enum/categoryEnum'
 import { createCurrentDateStr } from '../logic/HomeLogic'
+import { format } from 'date-fns'
 
 const todaysCalorieGoal = 2000
 
 const HomeContainer = () => {
   const { breakfastCal, setBreakfastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
-  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, setModalCalorie, onPressPanel } = useModalState()
+  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, onPressPanel } = useModalState()
   const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
+
+  // componentDidMount相当
+  useEffect(() => {
+    loadAndSetState(format(new Date(), 'MM/dd/yyyy'))
+  }, [])
 
   const setCalorie = (category: string, calorie: number) => {
     console.log(category)
@@ -65,12 +71,18 @@ const HomeContainer = () => {
     setSelectedDateStr(currentDateStr)
     // await setSelectedDateStr()
     // 20190101
+    loadAndSetState(currentDateStr)
+  }
+
+  const loadAndSetState = async (currentDateStr: string) => {
     const calorieState = await loadCalories(AsyncStorage, currentDateStr)
     setBreakfastCal(calorieState.breakfastCal)
     setLunchCal(calorieState.lunchCal)
     setDinnerCal(calorieState.dinnerCal)
     setSnackCal(calorieState.snackCal)
   }
+
+
 
   return (
     <SafeAreaView style={S.container}>
