@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Modal, TextInput } from 'react-native'
 import { Card } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const CalorieChangeModal = (props) => {
+type propsType = {
+  isModalVisible: boolean,
+  category: string,
+  calories: number,
+  closeModal(): void,
+  setCalorie(string, number): void
+}
+
+const CalorieChangeModal = (props: propsType) => {
   const [calorie, setCalorie] = useState(0)
+  const inputEl = useRef(null)
+
+  useEffect(() => {
+    if (props.isModalVisible) {
+      // CARE: androidの為にsetTimeoutが必要
+      setTimeout(() => inputEl.current.focus(), 150)
+    }
+
+  })
 
   return (
     <Modal
@@ -17,11 +34,12 @@ const CalorieChangeModal = (props) => {
         <Card style={S.container}>
           <Text style={S.categoryText}>{props.category}</Text>
           <TextInput
-            style={S.caloreValueText}
+            style={S.calorieValueText}
             onChangeText={calorie => setCalorie(parseInt(calorie))}
             placeholder={JSON.stringify(props.calories)}
             autoFocus
             keyboardType="number-pad"
+            ref={inputEl}
             onEndEditing={() => {
               props.closeModal()
               props.setCalorie(props.category, calorie)
@@ -35,7 +53,7 @@ const CalorieChangeModal = (props) => {
 }
 
 
-const S = StyleSheet.create({
+const S: any = StyleSheet.create({
   darkContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
