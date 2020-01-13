@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage } from 'react-native'
+import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage, View, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/CaloriePanel'
 import CalorieChangeModal from '../component/CalorieChangeModal'
@@ -10,12 +10,15 @@ import { useCalorieState, useModalState, useSelectedDayState } from '../hook/Hom
 import { categoryEnum } from '../assets/enum/categoryEnum'
 import { createCurrentDateStr } from '../logic/HomeLogic'
 import { format } from 'date-fns'
+import ModalWebView from '../component/ModalWebView'
+import { Ionicons } from '@expo/vector-icons';
+
 
 const todaysCalorieGoal = 2000
 
 const HomeContainer = () => {
   const { breakfastCal, setBreakfastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
-  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, onPressPanel } = useModalState()
+  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, isSearchModalVisible, setIsSearchModalVisible, onPressPanel } = useModalState()
   const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
 
   // componentDidMount相当
@@ -86,6 +89,12 @@ const HomeContainer = () => {
 
   return (
     <SafeAreaView style={S.container}>
+      <View>
+        <TouchableOpacity onPress={() => setIsSearchModalVisible(true)}>
+          <Ionicons name="md-book" size={32} color="green" />
+        </TouchableOpacity>
+      </View>
+      <ModalWebView isSearchModalVisible={isSearchModalVisible} />
       <CaloriePanel
         category={'朝食'}
         calorie={breakfastCal}

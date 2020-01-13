@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { format, addDays } from 'date-fns'
+const easyHooks = require('easy-hooks')
 
 // @param [[hookname, initialState]]
 const hookFactory = (inputs: any) => {
@@ -38,22 +39,20 @@ export const useCalorieState = () => {
 }
 
 export const useModalState = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [modalCategory, setModalCategory] = useState('')
-  const [modalCalorie, setModalCalorie] = useState(0)
+  const hooks = hookFactory([
+    ['isModalVisible', false],
+    ['isSearchModalVisible', false],
+    ['modalCategory', ''],
+    ['modalCalorie', 0]
+  ])
 
   const onPressPanel = (category: string) => {
-    setModalCategory(category)
-    setIsModalVisible(true)
+    hooks.setModalCategory(category)
+    hooks.setIsModalVisible(true)
   }
 
   return {
-    isModalVisible,
-    setIsModalVisible,
-    modalCategory,
-    setModalCategory,
-    modalCalorie,
-    setModalCalorie,
+    ...hooks,
     onPressPanel
   }
 }
