@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.kaba.inc.calCalc",
-      "versionCode": 4,
+      "versionCode": 5,
       "permissions": []
     }
   }

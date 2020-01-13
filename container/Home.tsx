@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage, View, TouchableOpacity, Text } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CaloriePanel from '../component/CaloriePanel'
 import CalorieChangeModal from '../component/CalorieChangeModal'
@@ -89,11 +89,10 @@ const HomeContainer = () => {
 
   return (
     <SafeAreaView style={S.container}>
-      <View>
-        <TouchableOpacity onPress={() => setIsSearchModalVisible(true)}>
-          <Ionicons name="md-book" size={32} color="green" />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={S.openWebViewButton} onPress={() => setIsSearchModalVisible(true)}>
+        <Text>カロリーを調べる</Text>
+        <Ionicons name="logo-google" size={32} color="black" />
+      </TouchableOpacity>
       <ModalWebView isSearchModalVisible={isSearchModalVisible} />
       <CaloriePanel
         category={'朝食'}
@@ -144,5 +143,12 @@ const S = StyleSheet.create({
   listContainer: {
     width: wp(100),
     alignItems: 'center'
+  },
+  openWebViewButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    padding: 4,
+    backgroundColor: '#03DACE'
   }
 })
