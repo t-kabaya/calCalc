@@ -3,15 +3,15 @@ import { StyleSheet, Text, View, Modal, TextInput } from 'react-native'
 import { Card } from 'native-base'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-type propsType = {
+type PropsType = {
   isModalVisible: boolean,
   category: string,
   calories: number,
   closeModal(): void,
-  setCalorie(string, number): void
+  setCalorie(category: string, calorie: number): void
 }
 
-const CalorieChangeModal = (props: propsType) => {
+const CalorieChangeModal = (props: PropsType) => {
   const [calorie, setCalorie] = useState(0)
   const inputEl = useRef(null)
 
