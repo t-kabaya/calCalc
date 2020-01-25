@@ -7,7 +7,7 @@ import WeekSelectFooter from '../component/WeekSelectFooter'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { loadCalories, saveCalories } from '../database/database'
 import { useState } from '../hook/HomeHook'
-import { categoryEnum } from '../assets/enum/categoryEnum'
+import { categoryEnum } from '../enum/categoryEnum'
 import { createCurrentDateStr } from '../logic/HomeLogic'
 import { format } from 'date-fns'
 import ModalWebView from '../component/ModalWebView'
@@ -31,7 +31,7 @@ const HomeContainer = () => {
     loadAndSetState(format(new Date(), 'MM/dd/yyyy'))
   }, [])
 
-  const setCalorie = (category: string, calorie: number) => {
+  const setCalorie = (category: string, calorie: number): void => {
     let newCalories = {
       breakfastCal,
       lunchCal,
@@ -63,12 +63,7 @@ const HomeContainer = () => {
     saveCalories(AsyncStorage, selectedDateStr, newCalories)
   }
 
-  const onPressDay = async (dayIndex) => {
-    // TODO: 曜日と、日付を両方管理しているので、二重管理になる。要リファクタ。
-    const diffOfDate = dayIndex - selectedDayIndex
-    console.log({ dayIndex })
-    console.log({ selectedDayIndex })
-
+  const onPressDay = async (dayIndex: any) => {
     const currentDateStr = createCurrentDateStr(dayIndex, new Date())
 
     // 今日の日付のindexを取得。
@@ -80,15 +75,13 @@ const HomeContainer = () => {
     loadAndSetState(currentDateStr)
   }
 
-  const loadAndSetState = async (currentDateStr: string) => {
+  const loadAndSetState = async (currentDateStr: string): Promise<void> => {
     const calorieState = await loadCalories(AsyncStorage, currentDateStr)
     setBreakfastCal(calorieState.breakfastCal)
     setLunchCal(calorieState.lunchCal)
     setDinnerCal(calorieState.dinnerCal)
     setSnackCal(calorieState.snackCal)
   }
-
-
 
   return (
     <SafeAreaView style={S.container}>
@@ -134,8 +127,6 @@ const HomeContainer = () => {
   )
 }
 
-export default HomeContainer
-
 const S = StyleSheet.create({
   container: {
     flex: 1,
@@ -155,3 +146,5 @@ const S = StyleSheet.create({
     backgroundColor: '#03DACE'
   }
 })
+
+export default HomeContainer

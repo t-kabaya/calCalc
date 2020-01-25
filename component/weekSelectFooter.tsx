@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { dayEnum } from '../assets/enum/dayEnum'
+import { dayEnum } from '../enum/dayEnum'
 
 const weekData = [
   { dayName: '日', dayKey: dayEnum.sunday },

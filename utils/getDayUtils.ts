@@ -1,4 +1,4 @@
-import { dayEnum } from '../assets/enum/dayEnum'
+import { dayEnum } from '../enum/dayEnum'
 
 const getTodayName = () => {
   const dayIndex = new Date().getDay()
