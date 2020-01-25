@@ -6,7 +6,7 @@ import CalorieChangeModal from '../component/CalorieChangeModal'
 import WeekSelectFooter from '../component/WeekSelectFooter'
 import TodayCalorieGoal from '../component/TodayCalorieGoal'
 import { loadCalories, saveCalories } from '../database/database'
-import { useCalorieState, useModalState, useSelectedDayState } from '../hook/HomeHook'
+import { useState } from '../hook/HomeHook'
 import { categoryEnum } from '../assets/enum/categoryEnum'
 import { createCurrentDateStr } from '../logic/HomeLogic'
 import { format } from 'date-fns'
@@ -17,9 +17,15 @@ import { Ionicons } from '@expo/vector-icons';
 const todaysCalorieGoal = 2000
 
 const HomeContainer = () => {
-  const { breakfastCal, setBreakfastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, totalCalorie } = useCalorieState()
-  const { isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, isSearchModalVisible, setIsSearchModalVisible, onPressPanel } = useModalState()
-  const { selectedDayIndex, selectedDateStr, setSelectedDateStr, setDateByDiff } = useSelectedDayState()
+  const { breakfastCal, setBreakfastCal, lunchCal, setLunchCal, dinnerCal, setDinnerCal, snackCal, setSnackCal, isModalVisible, setIsModalVisible, modalCategory, setModalCategory, modalCalorie, isSearchModalVisible, setIsSearchModalVisible, selectedDateStr, setSelectedDateStr } = useState()
+
+  const totalCalorie = breakfastCal + lunchCal + dinnerCal + snackCal
+  const selectedDayIndex = new Date(selectedDateStr).getDay()
+
+  const onPressPanel = (category: string) => {
+    setModalCategory(category)
+    setIsModalVisible(true)
+  }
 
   // componentDidMount相当
   useEffect(() => {
@@ -27,8 +33,6 @@ const HomeContainer = () => {
   }, [])
 
   const setCalorie = (category: string, calorie: number) => {
-    console.log(category)
-
     let newCalories = {
       breakfastCal,
       lunchCal,
