@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import { StyleSheet, Platform, StatusBar, SafeAreaView, AsyncStorage, View, TouchableOpacity, Text } from 'react-native'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import CaloriePanel from '../component/CaloriePanel'
 import CalorieChangeModal from '../component/CalorieChangeModal'
 import WeekSelectFooter from '../component/WeekSelectFooter'
@@ -12,7 +12,6 @@ import { createCurrentDateStr } from '../logic/HomeLogic'
 import { format } from 'date-fns'
 import ModalWebView from '../component/ModalWebView'
 import { Ionicons } from '@expo/vector-icons';
-
 
 const todaysCalorieGoal = 2000
 
@@ -93,11 +92,11 @@ const HomeContainer = () => {
 
   return (
     <SafeAreaView style={S.container}>
-      <TouchableOpacity style={S.openWebViewButton} onPress={() => setIsSearchModalVisible(true)}>
+      {/* <TouchableOpacity style={S.openWebViewButton} onPress={() => setIsSearchModalVisible(true)}>
         <Text>カロリーを調べる</Text>
         <Ionicons name="logo-google" size={32} color="black" />
       </TouchableOpacity>
-      <ModalWebView isSearchModalVisible={isSearchModalVisible} />
+      <ModalWebView isSearchModalVisible={isSearchModalVisible} /> */}
       <CaloriePanel
         category={'朝食'}
         calorie={breakfastCal}
@@ -118,7 +117,7 @@ const HomeContainer = () => {
       <CalorieChangeModal
         isModalVisible={isModalVisible}
         category={modalCategory}
-        calorie={modalCalorie}
+        calories={modalCalorie}
 
         closeModal={() => setIsModalVisible(false)}
         setCalorie={setCalorie}

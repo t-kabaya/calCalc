@@ -16,11 +16,9 @@ const CalorieChangeModal = (props: PropsType) => {
   const inputEl = useRef(null)
 
   useEffect(() => {
-    if (props.isModalVisible) {
-      // CARE: androidの為にsetTimeoutが必要
-      setTimeout(() => inputEl.current.focus(), 150)
-    }
-
+    if (!props.isModalVisible) return
+    // CARE: androidの為にsetTimeoutが必要
+    setTimeout(() => inputEl.current.focus(), 150)
   })
 
   return (
